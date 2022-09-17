@@ -18,6 +18,7 @@ namespace ServerWF
         const string IP = "127.0.0.1";
         IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(IP), PORT);
         Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        List<Socket> clients = new List<Socket>();
         //Socket clientSocket;
         public serverForm()
         {
@@ -43,23 +44,40 @@ namespace ServerWF
                         
                         //MessageBox.Show(counter.ToString());
                         Socket clientSocket = serverSocket.Accept();
+                            lock(clients)
+                            {
+                                clients.Add(clientSocket);
+                                //MessageBox.Show("ok!");
+                            }
                         Invoke(new Action(() => label2.Text = counter++.ToString()));
                             Task.Run(() =>
                             {
-                                bytes = 0;
-                                byte[] buffer = new byte[51024];
-                                StringBuilder builder = new StringBuilder();
                                 do
                                 {
-                                    bytes = clientSocket.Receive(buffer);
-                                    builder.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
-                                } while (clientSocket.Available > 0);
+                                    bytes = 0;
+                                    byte[] buffer = new byte[51024];
+                                    StringBuilder builder = new StringBuilder();
+                                    do
+                                    {
+                                        bytes = clientSocket.Receive(buffer);
+                                        builder.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
+                                    } while (clientSocket.Available > 0);
+                                    listBox1.Items.Add(builder.ToString());
+                                    /////send
+                                    byte[] data = Encoding.Unicode.GetBytes(builder.ToString());
+                                    foreach (Socket item in clients)
+                                    {
+                                        if(item!= clientSocket)item.Send(data);
+                                    }
 
+
+                                } while (bytes>0);
+                                
                                 clientSocket?.Close();
                             });
 
                         });
-
+                        //clientSocket?.Close();
                     }
                     serverSocket.Shutdown(SocketShutdown.Both);
                     serverSocket?.Close();
@@ -75,9 +93,16 @@ namespace ServerWF
         }
         private void serverForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //clientSocket?.Close();
-            //serverSocket.Shutdown(SocketShutdown.Both);
-            serverSocket?.Close();
+            lock (clients)
+            {
+                foreach (Socket item in clients)
+                {
+                    item.Close();
+                }
+            }
+                //clientSocket?.Close();
+                //serverSocket.Shutdown(SocketShutdown.Both);
+                serverSocket?.Close();
         }
     }
 }
