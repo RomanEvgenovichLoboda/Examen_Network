@@ -1,8 +1,8 @@
 namespace Examen_Network
 {
-    public partial class Form1 : Form
+    public partial class serverForm : Form
     {
-        public Form1()
+        public serverForm()
         {
             InitializeComponent();
         }
