@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,9 +15,28 @@ namespace Client
     public partial class clientForm : Form
     {
         bool left, right, up, down;
+
+
+        const int PORT = 8088;
+        const string IP = "127.0.0.1";
+        IPEndPoint iPEnd = new IPEndPoint(IPAddress.Parse(IP), PORT);
+        Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+
         public clientForm()
         {
             InitializeComponent();
+        }
+
+        private void clientForm_Load(object sender, EventArgs e)
+        {
+            clientSocket.Connect(iPEnd);
+        }
+
+        private void clientForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            clientSocket.Shutdown(SocketShutdown.Both);
+            clientSocket.Close();
         }
 
         private void clientForm_KeyDown(object sender, KeyEventArgs e)

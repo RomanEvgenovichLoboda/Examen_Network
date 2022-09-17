@@ -51,7 +51,9 @@
             this.Controls.Add(this.pictureBox1);
             this.KeyPreview = true;
             this.Name = "clientForm";
-            this.Text = "Form1";
+            this.Text = "Battle City";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.clientForm_FormClosing);
+            this.Load += new System.EventHandler(this.clientForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.clientForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
