@@ -38,7 +38,7 @@
             this.pictureBox1.Image = global::Client.Properties.Resources.tank_up;
             this.pictureBox1.Location = new System.Drawing.Point(23, 400);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(44, 38);
+            this.pictureBox1.Size = new System.Drawing.Size(44, 44);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
