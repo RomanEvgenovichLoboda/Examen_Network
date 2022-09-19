@@ -34,12 +34,15 @@ namespace Client
 
 
             clientData = new ClientData(pictureBox1.Location, "tank_up.png");
-
+            //SerilizeToJSON("fgdfg");
+           
+            ClientListen();
         }
 
         private void clientForm_Load(object sender, EventArgs e)
         {
-            clientSocket.Connect(iPEnd);
+            //clientSocket.Connect(iPEnd);
+            //ClientListen();
         }
 
         private void clientForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -251,60 +254,87 @@ namespace Client
             string jsonStr = JsonConvert.SerializeObject(obj.GetType());
             byte[] data = Encoding.UTF8.GetBytes(jsonStr);
             clientSocket.Send(data);
-            await Task.Run(() =>
+            //await Task.Run(() =>
+            //{
+            //    int bytes = 0;
+            //    data = new byte[51024];
+            //    StringBuilder builder = new StringBuilder();
+            //    do
+            //    {
+            //        bytes = clientSocket.Receive(data);
+            //        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+            //    } while (clientSocket.Available > 0);
+            //    Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
+            //    //await Task.Delay(10);
+
+            //    //////Last
+            //    //try
+            //    //{
+            //    //    ClientData temp = JsonConvert.DeserializeObject<ClientData>(builder.ToString());
+            //    //    if (tankEnemy == null)
+            //    //    {
+            //    //        tankEnemy = new PictureBox();
+            //    //        tankEnemy.Image = Image.FromFile(temp.ImagePath);
+            //    //        tankEnemy.Location = temp.Location;
+            //    //        this.Controls.Add(tankEnemy);
+            //    //    }
+            //    //    else
+            //    //    {
+            //    //        tankEnemy.Image = Image.FromFile(temp.ImagePath);
+            //    //        tankEnemy.Location = temp.Location;
+            //    //        //Bullet_Run(tankEnemy);
+            //    //    }
+
+            //    //}
+            //    //catch (Exception ex)
+            //    //{
+            //    //    try
+            //    //    {
+            //    //        BulletData temp = JsonConvert.DeserializeObject<BulletData>(builder.ToString());
+            //    //        PictureBox bulletEnemy = new PictureBox();
+            //    //        bulletEnemy.Image = Image.FromFile(temp.ImagePath);
+            //    //        bulletEnemy.Location = temp.Location;
+            //    //        this.Controls.Add(bulletEnemy);
+            //    //        Bullet_Run(tankEnemy, true);
+
+            //    //    }
+            //    //    catch (Exception ex2)
+            //    //    {
+            //    //        MessageBox.Show(ex.ToString());
+            //    //    }
+
+            //    //}
+
+
+            //});
+
+        }
+
+        public void ClientListen()
+        {
+            //ClientData clientData = new ClientData();
+            //clientData.Location = pictureBox1.Location;
+            //clientData.ImagePath = "tank_up.png";
+            //SerilizeToJSON(clientData);
+            clientSocket.Connect(iPEnd);
+            Task.Run(() =>
             {
-                int bytes = 0;
-                data = new byte[51024];
-                StringBuilder builder = new StringBuilder();
                 do
                 {
-                    bytes = clientSocket.Receive(data);
-                    builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                } while (clientSocket.Available > 0);
-                Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
-                //await Task.Delay(10);
+                    int bytes = 0;
+                    byte[] data = new byte[51024];
+                    StringBuilder builder = new StringBuilder();
+                    do
+                    {
+                        bytes = clientSocket.Receive(data);
+                        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                    } while (clientSocket.Available > 0);
+                    Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
+                } while (true);
 
-                //////Last
-                //try
-                //{
-                //    ClientData temp = JsonConvert.DeserializeObject<ClientData>(builder.ToString());
-                //    if (tankEnemy == null)
-                //    {
-                //        tankEnemy = new PictureBox();
-                //        tankEnemy.Image = Image.FromFile(temp.ImagePath);
-                //        tankEnemy.Location = temp.Location;
-                //        this.Controls.Add(tankEnemy);
-                //    }
-                //    else
-                //    {
-                //        tankEnemy.Image = Image.FromFile(temp.ImagePath);
-                //        tankEnemy.Location = temp.Location;
-                //        //Bullet_Run(tankEnemy);
-                //    }
-
-                //}
-                //catch (Exception ex)
-                //{
-                //    try
-                //    {
-                //        BulletData temp = JsonConvert.DeserializeObject<BulletData>(builder.ToString());
-                //        PictureBox bulletEnemy = new PictureBox();
-                //        bulletEnemy.Image = Image.FromFile(temp.ImagePath);
-                //        bulletEnemy.Location = temp.Location;
-                //        this.Controls.Add(bulletEnemy);
-                //        Bullet_Run(tankEnemy, true);
-
-                //    }
-                //    catch (Exception ex2)
-                //    {
-                //        MessageBox.Show(ex.ToString());
-                //    }
-
-                //}
 
 
             });
-
         }
     }
 }
