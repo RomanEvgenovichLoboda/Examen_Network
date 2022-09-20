@@ -10,7 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Client.Model;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
+//using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Client
 {
@@ -303,7 +305,7 @@ namespace Client
         }
         public  void SendData()
         {
-            string jsonStr = JsonConvert.SerializeObject(clientData);
+            string jsonStr = JsonSerializer.Serialize<ClientData>(clientData); //JsonConvert.SerializeObject(clientData);
             byte[] data = Encoding.UTF8.GetBytes(jsonStr);
             clientSocket.Send(data);
             //await Task.Run(() =>
@@ -411,22 +413,33 @@ namespace Client
                         builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                     } while (clientSocket.Available > 0);
                     Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
-                    string temp = builder.ToString();
-                    //ClientData enemyD = JsonConvert.DeserializeObject<ClientData>(temp);
-                    //if (tankEnemy == null)
-                    //{
-                    //    tankEnemy = new PictureBox();
-                    //    tankEnemy.Size = pictureBox1.Size;
-                    //    tankEnemy.Location = enemyD.Location;
-                    //    tankEnemy.Image = Image.FromFile(enemyD.ImagePath);
-                    //    Invoke(new Action(() => Controls.Add(tankEnemy)));
 
-                    //}
-                    //else
-                    //{
-                    //    tankEnemy.Location = enemyD.Location;
-                    //    tankEnemy.Image = Image.FromFile(enemyD.ImagePath);
-                    //}
+                    try
+                    {
+                        string temp = builder.ToString();
+                        ClientData enemyD = JsonSerializer.Deserialize<ClientData>(temp);  //JsonConvert.DeserializeObject<ClientData>(temp);
+                        if (tankEnemy == null)
+                        {
+                            tankEnemy = new PictureBox();
+                            tankEnemy.Size = pictureBox1.Size;
+                            tankEnemy.Location = enemyD.Location;
+                            tankEnemy.Image = Image.FromFile(enemyD.ImagePath);
+                            Invoke(new Action(() => Controls.Add(tankEnemy)));
+
+                        }
+                        else
+                        {
+                            tankEnemy.Location = enemyD.Location;
+                            tankEnemy.Image = Image.FromFile(enemyD.ImagePath);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MessageBox.Show(ex.ToString());
+                        MessageBox.Show(ex.Message.ToString());
+                    }
+                    
 
 
 
