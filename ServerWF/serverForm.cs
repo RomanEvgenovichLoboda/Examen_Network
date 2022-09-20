@@ -74,6 +74,11 @@ namespace ServerWF
                                 } while (bytes>0);
                                 
                                 clientSocket?.Close();
+                                lock (clients)
+                                {
+                                    clients.Remove(clientSocket);
+                                    //MessageBox.Show("ok!");
+                                }
                             });
 
                         });
@@ -81,6 +86,7 @@ namespace ServerWF
                     }
                     serverSocket.Shutdown(SocketShutdown.Both);
                     serverSocket?.Close();
+
                 }
 
                 catch (Exception ex)
