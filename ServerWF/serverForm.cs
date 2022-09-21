@@ -93,8 +93,7 @@ namespace ServerWF
                         });
                         //clientSocket?.Close();
                     }
-                    serverSocket.Shutdown(SocketShutdown.Both);
-                    serverSocket?.Close();
+                    
 
                 }
 
@@ -103,7 +102,8 @@ namespace ServerWF
                     MessageBox.Show(ex.ToString());
                 }
                 label1.Invoke(new Action(() => { label1.Text = "Server end..."; }));
-
+                serverSocket.Shutdown(SocketShutdown.Both);
+                serverSocket?.Close();
             });
         }
         private void serverForm_FormClosing(object sender, FormClosingEventArgs e)

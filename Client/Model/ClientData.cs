@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,10 +17,14 @@ namespace Client.Model
         {
             Location = location;
             ImagePath = imagePath;
+            Bullet = new BulletData();
             //Bullets = new List<BulletData>();
         }
+        public bool IsBullet { get; set; }
         public Point Location { get; set; }
         public string ImagePath { get; set; }
+        public BulletData Bullet { get; set; }
+
         //public List<BulletData> Bullets { get; set; }
         public override string ToString()
         {
