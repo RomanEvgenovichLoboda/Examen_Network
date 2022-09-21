@@ -12,11 +12,11 @@ namespace Client.Model
         public BulletData() { }
         public BulletData(string imagePath, string move)
         {
-            ImagePath = imagePath;
+            //ImagePath = imagePath;
             Move = move;
         }
         
-        public string ImagePath { get; set; }
+       // public string ImagePath { get; set; }
         public string Move { get; set; }
     }
 }

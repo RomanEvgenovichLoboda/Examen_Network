@@ -18,7 +18,7 @@ namespace Client
 {
     public partial class clientForm : Form
     {
-        bool left, right, up, down;
+        //bool left, right, up, down;
         ClientData clientData;
 
         PictureBox tankEnemy;
@@ -36,16 +36,8 @@ namespace Client
 
 
             clientData = new ClientData(pictureBox1.Location, "tank_up.png");
-            clientData.Bullet.Move = "up";
+            clientData.BulletMove = "up";
             DoubleBuffered = true;
-
-            
-            //tankEnemy = new PictureBox();
-            //tankEnemy.Size = pictureBox1.Size;
-            //tankEnemy.SizeMode = PictureBoxSizeMode.StretchImage;
-            //tankEnemy.Location = new Point(50, 50);
-            //tankEnemy.Image = Image.FromFile("tank_up.png");
-            //Controls.Add(tankEnemy);
 
 
 
@@ -70,8 +62,8 @@ namespace Client
             {
 
                 //TankMuves(pictureBox1, "left");
-                left = true;
-                right = up = down = false;
+                //left = true;
+                //right = up = down = false;
                 pictureBox1.Image = Image.FromFile("tank_left.png");//Properties.Resources.tank_left;
                 if (pictureBox1.Location.X > 0)
                 {
@@ -80,15 +72,15 @@ namespace Client
 
                 clientData.ImagePath = "tank_left.png";
                 clientData.Location = pictureBox1.Location;
-                clientData.Bullet.Move = "left";
+                clientData.BulletMove = "left";
                 clientData.IsBullet = false;
                 SendData();
             }
             else if (e.KeyValue == (char)Keys.Right)
             {
                 //TankMuves(pictureBox1, "right");
-                right = true;
-                left = up = down = false;
+                //right = true;
+                //left = up = down = false;
                 pictureBox1.Image = Image.FromFile("tank_right.png"); //Properties.Resources.tank_right;
                 if (pictureBox1.Location.X <= this.Width - 50)
                 {
@@ -97,15 +89,15 @@ namespace Client
 
                 clientData.ImagePath = "tank_right.png";
                 clientData.Location = pictureBox1.Location;
-                clientData.Bullet.Move = "right";
+                clientData.BulletMove = "right";
                 clientData.IsBullet = false;
                 SendData();
             }
             else if (e.KeyValue == (char)Keys.Up)
             {
                 //TankMuves(pictureBox1, "up");
-                up = true;
-                right = left = down = false;
+                //up = true;
+                //right = left = down = false;
                 pictureBox1.Image = Image.FromFile("tank_up.png"); //Properties.Resources.tank_up;
                 if (pictureBox1.Location.Y > 0)
                 {
@@ -114,15 +106,15 @@ namespace Client
 
                 clientData.ImagePath = "tank_up.png";
                 clientData.Location = pictureBox1.Location;
-                clientData.Bullet.Move = "up";
+                clientData.BulletMove = "up";
                 clientData.IsBullet = false;
                 SendData();
             }
             else if (e.KeyValue == (char)Keys.Down)
             {
                 //TankMuves(pictureBox1, "down");
-                down = true;
-                right = up = left = false;
+                //down = true;
+                //right = up = left = false;
                 pictureBox1.Image = Image.FromFile("tank_down.png");  //Properties.Resources.tank_down;
                 if (pictureBox1.Location.Y <= this.Height - 50)
                 {
@@ -131,7 +123,7 @@ namespace Client
 
                 clientData.ImagePath = "tank_down.png";
                 clientData.Location = pictureBox1.Location;
-                clientData.Bullet.Move = "down";
+                clientData.BulletMove = "down";
                 clientData.IsBullet = false;
                 SendData();
             }
@@ -146,7 +138,7 @@ namespace Client
             }
         }
       
-        void Bullet_Run(PictureBox tank, ClientData someClient, bool is_enemy = false)
+        void Bullet_Run(PictureBox tank, ClientData someClient)
         {
             Invoke(new Action(async () =>
             {
@@ -155,22 +147,22 @@ namespace Client
                 bullet.SizeMode = PictureBoxSizeMode.StretchImage;
                 //bullet.Image = Properties.Resources.bullet_up;
 
-                if  (someClient.Bullet.Move.Equals("up")) //(up)//(tank.Image == Image.FromFile("tank_up.png")) //
+                if  (someClient.BulletMove.Equals("up")) //(up)//(tank.Image == Image.FromFile("tank_up.png")) //
                 {
                     bullet.Image = Properties.Resources.bullet_up;
                     bullet.Location = new Point(tank.Location.X + 12, tank.Location.Y);
 
                     //////
-                    if (!is_enemy)
-                    {
-                        clientData.Bullet.ImagePath = "bullet_up.png";
-                        //clientData.Bullet.Move = "up";
-                        clientData.IsBullet = true;
-                        //BulletData bulletData = new BulletData(bullet.Location, "bullet_up.png", "up");
-                        SendData();
+                    //if (!is_enemy)
+                    //{
+                    //    clientData.Bullet.ImagePath = "bullet_up.png";
+                    //    //clientData.Bullet.Move = "up";
+                    //    clientData.IsBullet = true;
+                    //    //BulletData bulletData = new BulletData(bullet.Location, "bullet_up.png", "up");
+                    //    SendData();
 
-                        clientData.IsBullet = false;
-                    }
+                    //    clientData.IsBullet = false;
+                    //}
 
 
 
@@ -187,22 +179,22 @@ namespace Client
                     }
                 }
 
-                else if (someClient.Bullet.Move.Equals("down"))//(down)//(tank.Image == Image.FromFile("tank_down.png")) //
+                else if (someClient.BulletMove.Equals("down"))//(down)//(tank.Image == Image.FromFile("tank_down.png")) //
                 {
                     bullet.Image = Properties.Resources.bullet_down;
                     bullet.Location = new Point(tank.Location.X + 12, tank.Location.Y + 20);
 
                     ///////
-                    if (!is_enemy)
-                    {
-                        clientData.Bullet.ImagePath = "bullet_down.png";
-                        //clientData.Bullet.Move = "down";
-                        clientData.IsBullet = true;
-                        //BulletData bulletData = new BulletData(bullet.Location, "bullet_down.png", "down");
-                        SendData();
+                    //if (!is_enemy)
+                    //{
+                    //    clientData.Bullet.ImagePath = "bullet_down.png";
+                    //    //clientData.Bullet.Move = "down";
+                    //    clientData.IsBullet = true;
+                    //    //BulletData bulletData = new BulletData(bullet.Location, "bullet_down.png", "down");
+                    //    SendData();
 
-                        clientData.IsBullet = false;
-                    }
+                    //    clientData.IsBullet = false;
+                    //}
 
 
 
@@ -214,23 +206,23 @@ namespace Client
                     }
                 }
 
-                else if (someClient.Bullet.Move.Equals("left")) //(left)//(tank.Image == Image.FromFile("tank_left.png"))  //
+                else if (someClient.BulletMove.Equals("left")) //(left)//(tank.Image == Image.FromFile("tank_left.png"))  //
                 {
                     bullet.Image = Properties.Resources.bullet_left;
                     bullet.Location = new Point(tank.Location.X, tank.Location.Y + 12);
 
                     /////
-                    if (!is_enemy)
-                    {
-                        clientData.Bullet.ImagePath = "bullet_left.png";
-                        //clientData.Bullet.Move = "left";
-                        clientData.IsBullet = true;
-                        //BulletData bulletData = new BulletData(bullet.Location, "bullet_left.png", "left");
-                        SendData();
+                    //if (!is_enemy)
+                    //{
+                    //    clientData.Bullet.ImagePath = "bullet_left.png";
+                    //    //clientData.Bullet.Move = "left";
+                    //    clientData.IsBullet = true;
+                    //    //BulletData bulletData = new BulletData(bullet.Location, "bullet_left.png", "left");
+                    //    SendData();
 
                         
-                        clientData.IsBullet = false;
-                    }
+                    //    clientData.IsBullet = false;
+                    //}
 
 
 
@@ -242,20 +234,20 @@ namespace Client
                     }
                 }
 
-                else if (someClient.Bullet.Move.Equals("right")) //(right)//(tank.Image == Image.FromFile("tank_right.png"))  //
+                else if (someClient.BulletMove.Equals("right")) //(right)//(tank.Image == Image.FromFile("tank_right.png"))  //
                 {
                     bullet.Image = Properties.Resources.bullet_right;
                     bullet.Location = new Point(tank.Location.X + 20, tank.Location.Y + 12);
 
                     /////
-                    if (!is_enemy)
-                    {
-                        clientData.Bullet.ImagePath = "bullet_right.png";
-                        //clientData.Bullet.Move = "left";
-                        clientData.IsBullet = true;
-                        //BulletData bulletData = new BulletData(bullet.Location, "bullet_right.png", "right");
-                        SendData();
-                    }
+                    //if (!is_enemy)
+                    //{
+                    //    clientData.Bullet.ImagePath = "bullet_right.png";
+                    //    //clientData.Bullet.Move = "left";
+                    //    clientData.IsBullet = true;
+                    //    //BulletData bulletData = new BulletData(bullet.Location, "bullet_right.png", "right");
+                    //    SendData();
+                    //}
 
 
 
@@ -326,7 +318,7 @@ namespace Client
                             tankEnemy.Location = enemyD.Location;
                             tankEnemy.Image = Image.FromFile(enemyD.ImagePath);
                         }
-                        else Bullet_Run(tankEnemy,enemyD,true);
+                        else Bullet_Run(tankEnemy,enemyD);
                         
                     }
                     catch (Exception ex)
