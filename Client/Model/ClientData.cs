@@ -20,5 +20,9 @@ namespace Client.Model
         public Point Location { get; set; }
         public string ImagePath { get; set; }
         //public List<BulletData> Bullets { get; set; }
+        public override string ToString()
+        {
+            return $"Location - X = {Location.X} Y = {Location.Y} \n ImageePath - {ImagePath}";
+        }
     }
 }

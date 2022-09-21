@@ -9,6 +9,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Client;
+using Client.Model;
+using System.Text.Json;
 
 namespace ServerWF
 {
@@ -33,7 +36,7 @@ namespace ServerWF
                 {
                     serverSocket.Bind(iPEnd);
                     serverSocket.Listen(10);
-                    label1.Invoke(new Action(async () => { label1.Text = $"Server listen on {IP}:{PORT}"; }));
+                    label1.Invoke(new Action(() => { label1.Text = $"Server listen on {IP}:{PORT}"; }));
                     int bytes = 2;
 
                     while (true)
@@ -55,14 +58,16 @@ namespace ServerWF
                                 do
                                 {
                                     bytes = 0;
-                                    byte[] buffer = new byte[51024];
+                                    byte[] buffer = new byte[1024];
                                     StringBuilder builder = new StringBuilder();
                                     do
                                     {
                                         bytes = clientSocket.Receive(buffer);
-                                        builder.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
+                                        builder.Append(Encoding.UTF8.GetString(buffer, 0, bytes));
                                     } while (clientSocket.Available > 0);
-                                    listBox1.Items.Add(builder.ToString());
+                                    Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
+                                    //var serializeData = JsonSerializer.Deserialize<ClientData>(builder.ToString());
+                                    //Invoke(new Action(() => listBox1.Items.Add(serializeData)));
                                     /////send
                                     byte[] data = Encoding.Unicode.GetBytes(builder.ToString());
                                     foreach (Socket item in clients)
@@ -76,7 +81,11 @@ namespace ServerWF
                                 clientSocket?.Close();
                                 lock (clients)
                                 {
-                                    clients.Remove(clientSocket);
+                                    foreach (var item in clients)
+                                    {
+                                        if (item == clientSocket) clients.Remove(item);
+                                    }
+                                    
                                     //MessageBox.Show("ok!");
                                 }
                             });
@@ -93,7 +102,7 @@ namespace ServerWF
                 {
                     MessageBox.Show(ex.ToString());
                 }
-                label1.Invoke(new Action(async () => { label1.Text = "Server end..."; }));
+                label1.Invoke(new Action(() => { label1.Text = "Server end..."; }));
 
             });
         }
