@@ -89,6 +89,12 @@
     <Compile Include="Model\ClientData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\RegistrForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\RegistrForm.Designer.cs">
+      <DependentUpon>RegistrForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="clientForm.resx">
       <DependentUpon>clientForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -102,6 +108,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\RegistrForm.resx">
+      <DependentUpon>RegistrForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
