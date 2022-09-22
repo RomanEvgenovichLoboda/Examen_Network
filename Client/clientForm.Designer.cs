@@ -47,9 +47,9 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(581, 12);
+            this.listBox1.Location = new System.Drawing.Point(697, 12);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(207, 148);
+            this.listBox1.Size = new System.Drawing.Size(91, 100);
             this.listBox1.TabIndex = 1;
             // 
             // clientForm
@@ -64,7 +64,6 @@
             this.Name = "clientForm";
             this.Text = "Battle City";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.clientForm_FormClosing);
-            this.Load += new System.EventHandler(this.clientForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.clientForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
