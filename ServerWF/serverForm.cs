@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Client;
 using Client.Model;
 using System.Text.Json;
+using Client.Controller;
 
 namespace ServerWF
 {
@@ -63,17 +64,69 @@ namespace ServerWF
                                     do
                                     {
                                         bytes = clientSocket.Receive(buffer);
-                                        builder.Append(Encoding.UTF8.GetString(buffer, 0, bytes));
+                                        
                                     } while (clientSocket.Available > 0);
-                                    Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
-                                    //var serializeData = JsonSerializer.Deserialize<ClientData>(builder.ToString());
-                                    //Invoke(new Action(() => listBox1.Items.Add(serializeData)));
-                                    /////send
-                                    byte[] data = Encoding.Unicode.GetBytes(builder.ToString());
-                                    foreach (Socket item in clients)
+                                    //builder.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
+                                    //Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
+                                    try
                                     {
-                                        if(item!= clientSocket)item.Send(data);
+                                        builder.Append(Encoding.Unicode.GetString(buffer, 0, bytes));
+                                        Invoke(new Action(() => listBox1.Items.Add(builder.ToString())));
+                                        var serializeData = JsonSerializer.Deserialize<ClientData>(builder.ToString());
+                                        Invoke(new Action(() => listBox1.Items.Add(serializeData)));
+
+                                        //Invoke(new Action(() => listBox1.Items.Add(serializeData)));
+                                        if (serializeData.IsAutorisation)
+                                        {
+                                            if (serializeData.IsRegistration)
+                                            {
+                                                Registration reg = new Registration();
+                                                reg.Regestration(serializeData.Name, serializeData.Pssw);
+                                                byte[] data = Encoding.Unicode.GetBytes("Registration Is OK");
+                                                clientSocket.Send(data);
+                                            }
+
+                                            else
+                                            {
+                                                Registration reg = new Registration();
+                                                reg.signIn(serializeData.Name, serializeData.Pssw);
+                                                if (reg.sidn_in)
+                                                {
+                                                    byte[] data = Encoding.Unicode.GetBytes("Welcome =)");
+                                                    clientSocket.Send(data);
+                                                }
+                                                else
+                                                {
+                                                    byte[] data = Encoding.Unicode.GetBytes("Wrong !!!");
+                                                    clientSocket.Send(data);
+                                                }
+
+
+                                            }
+
+
+                                        }
+
+
+                                         else
+                                         {
+                                        /////send
+                                            byte[] data = Encoding.Unicode.GetBytes(builder.ToString());
+                                            foreach (Socket item in clients)
+                                            {
+                                                if (item != clientSocket) item.Send(data);
+                                            }
+                                        }
                                     }
+                                    catch (Exception)
+                                    {
+
+                                    }
+                                    
+
+                                  
+
+                                   
 
 
                                 } while (bytes>0);

@@ -49,6 +49,7 @@ namespace Client
             DoubleBuffered = true;
             RegistrForm rform = new RegistrForm(clientData);
             rform.ShowDialog();
+            if (!rform.is_Ok) Close();
             Text = clientData.Name;
 
 
@@ -243,7 +244,7 @@ namespace Client
         public  void SendData()
         {
             string jsonStr = JsonSerializer.Serialize(clientData); //JsonConvert.SerializeObject(clientData);
-            byte[] data = Encoding.UTF8.GetBytes(jsonStr);
+            byte[] data = Encoding.Unicode.GetBytes(jsonStr);
 
 
             //listBox1.Items.Add(jsonStr);
@@ -262,7 +263,7 @@ namespace Client
                 do
                 {
                     int bytes = 0;
-                    byte[] data = new byte[51024];
+                    byte[] data = new byte[1024];
                     StringBuilder builder = new StringBuilder();
                     do
                     {
